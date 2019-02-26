@@ -57,6 +57,12 @@ loadingScene.preload = function () {
         margin: 1,
         spacing: 1
     });
+    this.load.spritesheet('lesion', 'assets/images/lesion.png', {
+        frameWidth: 59,
+        frameHeight: 59,
+        margin: 1,
+        spacing: 1
+    });
 
     // TESTING ONLY - to watch progress bar grow
     //for (let i=0;i<500;i++){
@@ -70,8 +76,8 @@ loadingScene.create = function () {
     // to loop forever, repeat: -1
     // key name is arbitrary
     /* this.anims.create({
-        key: 'funnyfaces',
-        frames: this.anims.generateFrameNames('pet', { frames: [1, 2, 3] }),
+        key: 'severities',
+        frames: this.anims.generateFrameNames('lesion', { frames: [1, 2, 3] }),
         frameRate: 7,
         yoyo: true,
         repeat: 0

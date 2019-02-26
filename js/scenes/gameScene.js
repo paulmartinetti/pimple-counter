@@ -4,27 +4,89 @@ let gameScene = new Phaser.Scene('Game');
 /* game flow
 *  
 *  depths
-*   1. lesions 1 - 39
-*   2. photo 40
-*   3. rings 50+
-*
+*   1. hide lesions 10
+*   2. photo 20
+*   3. show lesions 30
+*   4. rings 40
+*   
 *   dims
 *   ring = 57px
-*
-*
+*   lesion = 57px
+*   order = black, red, brown
 */
 
 // some parameters for our scene
 gameScene.init = function () {
 
-    // define lesions
-    this.lesionA = [{
-        x: 130,
+    // lesions are found by mousing over photo
+    this.dataA = [{
+        x: 131,
         y: 338,
         d: 8,
-        label: 'red'
+        frame: 1,
+        label: 'red',
+        desc: 'a papule'
+    }, {
+        x: 125,
+        y: 482,
+        d: 8,
+        frame: 1,
+        label: 'red',
+        desc: 'a papule'
+    }, {
+        x: 161,
+        y: 467,
+        d: 6,
+        frame: 1,
+        label: 'red',
+        desc: 'a papule'
+    }, {
+        x: 234,
+        y: 525,
+        d: 6,
+        frame: 1,
+        label: 'red',
+        desc: 'a papule'
+    }, {
+        x: 292,
+        y: 513,
+        d: 8,
+        frame: 1,
+        label: 'red',
+        desc: 'a papule'
+    }, {
+        x: 583,
+        y: 421,
+        d: 8,
+        frame: 1,
+        label: 'red',
+        desc: 'a pustule'
+    }, {
+        x: 470,
+        y: 475,
+        d: 10,
+        frame: 2,
+        label: 'brown',
+        desc: 'a healing lesion'
+    }, {
+        x: 304,
+        y: 4390,
+        d: 10,
+        frame: 2,
+        label: 'brown',
+        desc: 'a healing lesion'
+    }, {
+        x: 260,
+        y: 316,
+        d: 6,
+        frame: 0,
+        label: 'black',
+        desc: 'an open comedone'
     }];
-    // lesions are found by mousing over photo
+    
+    // lesion depths
+    this.hideLesions = 10;
+    this.showLesions = 30;
 
     // define ring (spritesheet is called ring)
     this.ringA = [];
@@ -35,17 +97,42 @@ gameScene.create = function () {
 
     // set bg and make interactive
     let photo = this.add.sprite(0, 0, 'photo').setOrigin(0, 0).setInteractive();
+    photo.setDepth(20);
 
     // listen on photo - the 'on' fn is available after setInteractive()
     // bc we're not changing photo, we can pass scene context 'this'
-    photo.on('pointerdown', this.placeLesion, this);
+    //photo.on('pointerdown', this.placeLesion, this);
 
-    // add a ring, make it interactive
-    let frameNum = 0;
-
-    for (let i = 0; i < this.lesionA.length; i++) {
-        let rect = this.add.graph
+    // add a group of lesions
+    let t = [];
+    let len = this.dataA.length
+    for (let i = 0; i < len; i++) {
+        //let obj = this.add.sprite(this.dataA.x, this.dataA.y, 'lesion', 0);
+        let obj = {
+            key: 'lesion',
+            repeat: 0,
+            frameNum: this.dataA.frame,
+            setXY: {
+                x: this.dataA.x,
+                y: this.dataA.y,
+            },
+        };
+        t.push(obj);
     }
+    t = this.add.group(t);
+    this.lesionA = t.getChildren();
+    console.log(this.lesionA);
+    // now add custom properties to spritesheet objects
+    for (let i = 0; i < len; i++) {
+        // d = diameter
+        this.lesionA[i].h = this.dataA.d;
+        this.lesionA[i].w = this.dataA.d;
+        this.lesionA[i].label = this.dataA.label;
+        this.lesionA[i].desc = this.dataA.desc;
+        this.lesionA[i].frame = this.dataA.frame;
+        this.lesionA[i].depth = this.showLesions;
+    }
+
 
     // make pet draggable
     // access the input object of this scene
@@ -88,7 +175,7 @@ gameScene.placeLesion = function (pointer, localX, localY) {
     return;
 
     let tRing = this.add.sprite(this.lesionA[i].x, this.lesionA[i].y, 'ring', frameNum).setInteractive();
-    /
+    //
     this.tRing.depth = 1;
     // create a new item in the position where user clicked
     let newItem = this.add.sprite(localX, localY, this.selectedItem.texture.key)
