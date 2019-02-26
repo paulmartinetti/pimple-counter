@@ -104,35 +104,32 @@ gameScene.create = function () {
     //photo.on('pointerdown', this.placeLesion, this);
 
     // add a group of lesions
-    let t = [];
+    let tempA = [];
     let len = this.dataA.length
     for (let i = 0; i < len; i++) {
         //let obj = this.add.sprite(this.dataA.x, this.dataA.y, 'lesion', 0);
         let obj = {
             key: 'lesion',
             repeat: 0,
-            frameNum: this.dataA.frame,
             setXY: {
-                x: this.dataA.x,
-                y: this.dataA.y,
+                x: this.dataA[i].x,
+                y: this.dataA[i].y,
             },
         };
-        t.push(obj);
+        tempA.push(obj);
     }
-    t = this.add.group(t);
-    this.lesionA = t.getChildren();
-    console.log(this.lesionA);
-    // now add custom properties to spritesheet objects
+    this.lesionA = this.add.group(tempA).getChildren();
+    // now add custom and common properties to spritesheet objects
     for (let i = 0; i < len; i++) {
         // d = diameter
-        this.lesionA[i].h = this.dataA.d;
-        this.lesionA[i].w = this.dataA.d;
-        this.lesionA[i].label = this.dataA.label;
-        this.lesionA[i].desc = this.dataA.desc;
-        this.lesionA[i].frame = this.dataA.frame;
+        this.lesionA[i].height = this.dataA[i].d;
+        this.lesionA[i].width = this.dataA[i].d;
         this.lesionA[i].depth = this.showLesions;
+        this.lesionA[i].label = this.dataA[i].label;
+        this.lesionA[i].desc = this.dataA[i].desc;
+        this.lesionA[i].setFrame(this.dataA[i].frame);
     }
-
+    console.log(this.lesionA);
 
     // make pet draggable
     // access the input object of this scene

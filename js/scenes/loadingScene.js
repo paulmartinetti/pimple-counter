@@ -21,8 +21,8 @@ loadingScene.preload = function () {
     // for graphics objs, the default origin is top-left
     bgBar.setPosition(gameW / 2 - barW / 2, gameH / 2 - barH / 2);
     // color, alpha (0-1)
-    bgBar.fillStyle(0xF5F5F5,1);
-    bgBar.fillRect(0,0,barW,barH);
+    bgBar.fillStyle(0xF5F5F5, 1);
+    bgBar.fillRect(0, 0, barW, barH);
 
     // progress bar
     let progressBar = this.add.graphics();
@@ -30,7 +30,7 @@ loadingScene.preload = function () {
 
     // listen to progress event
     // value = 0-1 of loaded
-    this.load.on('progress',function(value){
+    this.load.on('progress', function (value) {
 
         // clear the bar so we can draw it again
         progressBar.clear();
@@ -39,9 +39,9 @@ loadingScene.preload = function () {
         progressBar.fillStyle(0x9AD98D);
 
         // draw with updated 'value'
-        progressBar.fillRect(0, 0, (barW*value), barH);
+        progressBar.fillRect(0, 0, (barW * value), barH);
 
-    },this);
+    }, this);
 
 
     // load assets (can be accessed from different scenes)
@@ -51,15 +51,20 @@ loadingScene.preload = function () {
 
     // load ring spritesheet
     // params - key, filename, specs
+    //https://github.com/photonstorm/phaser/blob/master/src/textures/parsers/SpriteSheet.js
     this.load.spritesheet('ring', 'assets/images/ring57-175x59.png', {
-        frameWidth: 59,
-        frameHeight: 59,
+        frameWidth: 57,
+        frameHeight: 57,
+        startFrame: 0,
+        endFrame: 2,
         margin: 1,
         spacing: 1
     });
     this.load.spritesheet('lesion', 'assets/images/lesion.png', {
-        frameWidth: 59,
-        frameHeight: 59,
+        frameWidth: 57,
+        frameHeight: 57,
+        startFrame: 0,
+        endFrame: 2,
         margin: 1,
         spacing: 1
     });
