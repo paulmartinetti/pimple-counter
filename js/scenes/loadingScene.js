@@ -61,14 +61,15 @@ loadingScene.preload = function () {
         spacing: 1,
         frameNum: 0
     });
-    // 136 x 24
+    // 150 x 35
     this.load.spritesheet('btn', 'assets/images/showhide.png', {
-        frameWidth: 66,
-        frameHeight: 22,
+        frameWidth: 70,
+        frameHeight: 32,
         startFrame: 0,
         endFrame: 1,
         margin: 1,
         spacing: 1,
+        frameNum: 0
     });
     /* this.load.spritesheet('lesion', 'assets/images/lesion.png', {
         frameWidth: 57,
