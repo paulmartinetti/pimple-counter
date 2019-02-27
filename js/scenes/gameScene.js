@@ -91,6 +91,7 @@ gameScene.init = function () {
     // define ring (spritesheet is called ring)
     // add to this as user clicks
     this.ringA = [];
+    // var active = true / false
 };
 
 // executed once, after assets were loaded
@@ -122,14 +123,15 @@ gameScene.create = function () {
     // now add custom and common properties to spritesheet objects
     for (let i = 0; i < len; i++) {
         // d = diameter
-        this.lesionA[i].height = this.dataA[i].d;
-        this.lesionA[i].width = this.dataA[i].d;
+        this.lesionA[i].setDisplaySize(this.dataA[i].d, this.dataA[i].d);
         this.lesionA[i].depth = this.hideLesions;
+        //this.lesionA[i].depth = this.showLesions;
+        //this.lesionA[i].alpha = 0.4;
         this.lesionA[i].label = this.dataA[i].label;
         this.lesionA[i].desc = this.dataA[i].desc;
         this.lesionA[i].setFrame(this.dataA[i].frame);
     }
-    console.log(this.lesionA);
+    //console.log(this.lesionA);
 
     // make pet draggable
     // access the input object of this scene
@@ -169,14 +171,16 @@ gameScene.placeLesion = function (pointer, localX, localY) {
     // with our bg, it's the same in this case
     //console.log(pointer);
 
-    let tRing = this.add.sprite(localX, localY, 'ring', 0).setInteractive();
-    //
-    tRing.depth = 40;
-    // create a new item in the position where user clicked
-    //let newItem = this.add.sprite(localX, localY, this.selectedItem.texture.key)
+    // place lesion
+    let thisRing = this.add.sprite(localX, localY, 'ring', 0).setInteractive();
+    thisRing.depth = 40;
+    thisRing.active = true;
 
-    // block UI while pet goes to eat selectedItem
-    //this.uiBlocked = true;
+    // handle subsequent clicks - black, red, brown, off
+    thisRing.on('pointerdown',this.updateRing);
+
+    // store for scoring tog
+    this.ringA.push(thisRing);
 
     // move this.pet to newItem (set in create fn)
     // onComplete is the callback fn
@@ -193,27 +197,33 @@ gameScene.placeLesion = function (pointer, localX, localY) {
             // make newItem disappear
             newItem.destroy();
 
-            // listen for chewing to finish before unlocking ui
-            this.pet.on('animationcomplete', function () {
+             */
+};
 
-                // put pet face back to frame 0
-                // use setFrame after obj is created (instead of .frame())
-                this.pet.setFrame(0);
+// context = clicked Sprite
+gameScene.updateRing = function () {
 
-                // to limit placing one item, null selectedItem, reset ui
-                // this must follow stats update that needs selectedItem
-                this.uiReady();
-                // pass scene context (this)
-            }, this);
+    // switch
+    switch(this.frame.name){
+        case 0:
+        // to red
+        this.setFrame(1);
+        break;
 
-            // newItem is reached, so play chewing animation
-            this.pet.play('funnyfaces');
+        case 1:
+        // to brown
+        this.setFrame(2);
+        break;
 
-            // update stats (final implementation)
-            this.updateStats(this.selectedItem.customStats);
+        case 2:
+        this.x = -100;
+        this.y = -100;
+        this.active = false;
 
-        }
-    }); */
+    }
+
+    console.log(this.scene.ringA[0].active);
+
 };
 
 // heads up display
