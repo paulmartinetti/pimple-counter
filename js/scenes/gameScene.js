@@ -90,7 +90,7 @@ gameScene.init = function () {
     // lesion depths
     this.hideLesions = 10;
     this.showLesions = 30;
-    this.isShowing = false;
+    this.countBlock = false;
 
     // define ring (spritesheet is called ring)
     // add to this as user clicks
@@ -151,19 +151,19 @@ gameScene.togShowHide = function () {
     console.log(this.frame.name);
     //this.setFrame(1);
 
-   if (!this.scene.isShowing) {
+   if (this.frame.name==0) {
         // on hide
         this.setFrame(1);
         this.scene.lesionA.forEach(lesion => {
             lesion.depth = this.showLesions;
         });
-        this.scene.isShowing = true;
-    } else {
+        this.scene.countBlock = true;
+   } else if (this.frame.name == 1) {
         this.setFrame(0);
         this.scene.lesionA.forEach(lesion => {
             lesion.depth = this.hideLesions;
         });
-        this.scene.isShowing = false;
+        this.scene.countBlock = false;
     }
 
 };
@@ -171,6 +171,9 @@ gameScene.togShowHide = function () {
 
 // fn context = Scene not Sprite (bg) passed 'this' in on();
 gameScene.placeLesion = function (pointer, localX, localY) {
+    
+    // no counting while viewing answers
+    if (this.countBlock) return;
 
     // var 'pointer' shows game scene coordinates (and lots of info!)
     // vars localX, localY show coordinates of object selected
@@ -208,6 +211,10 @@ gameScene.placeLesion = function (pointer, localX, localY) {
 
 // context = clicked Sprite
 gameScene.updateRing = function () {
+
+    // no counting while viewing answers
+    if (this.scene.countBlock) return;
+
     console.log('updateRing');
 
     // switch
