@@ -70,7 +70,7 @@ gameScene.init = function () {
         desc: 'a healing lesion'
     }, {
         x: 304,
-        y: 4390,
+        y: 390,
         d: 10,
         frame: 2,
         label: 'brown',
@@ -89,6 +89,7 @@ gameScene.init = function () {
     this.showLesions = 30;
 
     // define ring (spritesheet is called ring)
+    // add to this as user clicks
     this.ringA = [];
 };
 
@@ -101,16 +102,15 @@ gameScene.create = function () {
 
     // listen on photo - the 'on' fn is available after setInteractive()
     // bc we're not changing photo, we can pass scene context 'this'
-    //photo.on('pointerdown', this.placeLesion, this);
+    photo.on('pointerdown', this.placeLesion, this);
 
     // add a group of lesions
     let tempA = [];
-    let len = this.dataA.length
+    let len = this.dataA.length;
     for (let i = 0; i < len; i++) {
         //let obj = this.add.sprite(this.dataA.x, this.dataA.y, 'lesion', 0);
         let obj = {
             key: 'lesion',
-            repeat: 0,
             setXY: {
                 x: this.dataA[i].x,
                 y: this.dataA[i].y,
@@ -124,7 +124,7 @@ gameScene.create = function () {
         // d = diameter
         this.lesionA[i].height = this.dataA[i].d;
         this.lesionA[i].width = this.dataA[i].d;
-        this.lesionA[i].depth = this.showLesions;
+        this.lesionA[i].depth = this.hideLesions;
         this.lesionA[i].label = this.dataA[i].label;
         this.lesionA[i].desc = this.dataA[i].desc;
         this.lesionA[i].setFrame(this.dataA[i].frame);
@@ -168,22 +168,20 @@ gameScene.placeLesion = function (pointer, localX, localY) {
     // vars localX, localY show coordinates of object selected
     // with our bg, it's the same in this case
     //console.log(pointer);
-    console.log(Math.round(localX), Math.round(localY));
-    return;
 
-    let tRing = this.add.sprite(this.lesionA[i].x, this.lesionA[i].y, 'ring', frameNum).setInteractive();
+    let tRing = this.add.sprite(localX, localY, 'ring', 0).setInteractive();
     //
-    this.tRing.depth = 1;
+    tRing.depth = 40;
     // create a new item in the position where user clicked
-    let newItem = this.add.sprite(localX, localY, this.selectedItem.texture.key)
+    //let newItem = this.add.sprite(localX, localY, this.selectedItem.texture.key)
 
     // block UI while pet goes to eat selectedItem
-    this.uiBlocked = true;
+    //this.uiBlocked = true;
 
     // move this.pet to newItem (set in create fn)
     // onComplete is the callback fn
     // tween is inside scene context (passed 'this' from btn)
-    let petTween = this.tweens.add({
+    /* let petTween = this.tweens.add({
         targets: this.pet,
         duration: 500,
         x: newItem.x,
@@ -215,7 +213,7 @@ gameScene.placeLesion = function (pointer, localX, localY) {
             this.updateStats(this.selectedItem.customStats);
 
         }
-    });
+    }); */
 };
 
 // heads up display

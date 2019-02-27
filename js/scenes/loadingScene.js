@@ -58,7 +58,8 @@ loadingScene.preload = function () {
         startFrame: 0,
         endFrame: 2,
         margin: 1,
-        spacing: 1
+        spacing: 1,
+        frameNum: 0
     });
     this.load.spritesheet('lesion', 'assets/images/lesion.png', {
         frameWidth: 57,
