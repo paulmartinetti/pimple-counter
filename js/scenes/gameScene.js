@@ -86,7 +86,7 @@ gameScene.init = function () {
         label: 'black',
         desc: 'an open comedone'
     }];
-    
+
     // lesion depths
     this.hideLesions = 10;
     this.showLesions = 30;
@@ -138,40 +138,33 @@ gameScene.create = function () {
     //console.log(this.lesionA);
 
     // make show / hide toggle
-    this.btn = this.add.sprite(this.gameH-150, 50, 'btn', 0);
-    this.btn.setDepth(21);
-    this.btn.setInteractive();
-    this.btn.on('pointerup',this.togShowHide);
-
-};
-
-// fn context - Scene
-gameScene.togShowHide = function () {
-
-    console.log(this.frame.name);
-    //this.setFrame(1);
-
-   if (this.frame.name==0) {
-        // on hide
-        this.setFrame(1);
-        this.scene.lesionA.forEach(lesion => {
-            lesion.depth = this.showLesions;
-        });
-        this.scene.countBlock = true;
-   } else if (this.frame.name == 1) {
-        this.setFrame(0);
-        this.scene.lesionA.forEach(lesion => {
-            lesion.depth = this.hideLesions;
-        });
-        this.scene.countBlock = false;
-    }
-
+    let btn = this.add.sprite(this.gameH - 150, 50, 'btn', 0);
+    btn.setDepth(21);
+    btn.setInteractive();
+    btn.on('pointerdown', function () {
+        if (this.frame.name == 0) {
+            // on hide
+            this.setFrame(1);
+            this.scene.lesionA.forEach(lesion => {
+                lesion.depth = this.scene.showLesions;
+            });
+            this.scene.countBlock = true;
+        } else if (this.frame.name == 1) {
+            this.setFrame(0);
+            this.scene.lesionA.forEach(lesion => {
+                lesion.depth = this.scene.hideLesions;
+            });
+            this.scene.countBlock = false;
+        }
+    });
 };
 
 
 // fn context = Scene not Sprite (bg) passed 'this' in on();
 gameScene.placeLesion = function (pointer, localX, localY) {
-    
+
+    console.log(this.countBlock);
+
     // no counting while viewing answers
     if (this.countBlock) return;
 
@@ -186,7 +179,7 @@ gameScene.placeLesion = function (pointer, localX, localY) {
     thisRing.active = true;
 
     // handle subsequent clicks - black, red, brown, off
-    thisRing.on('pointerdown',this.updateRing);
+    thisRing.on('pointerdown', this.updateRing);
 
     // store for scoring tog
     this.ringA.push(thisRing);
@@ -218,21 +211,21 @@ gameScene.updateRing = function () {
     console.log('updateRing');
 
     // switch
-    switch(this.frame.name){
+    switch (this.frame.name) {
         case 0:
-        // to red
-        this.setFrame(1);
-        break;
+            // to red
+            this.setFrame(1);
+            break;
 
         case 1:
-        // to brown
-        this.setFrame(2);
-        break;
+            // to brown
+            this.setFrame(2);
+            break;
 
         case 2:
-        this.x = -100;
-        this.y = -100;
-        this.active = false;
+            this.x = -100;
+            this.y = -100;
+            this.active = false;
 
     }
 

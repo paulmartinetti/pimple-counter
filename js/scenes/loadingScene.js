@@ -70,6 +70,14 @@ loadingScene.preload = function () {
         margin: 1,
         spacing: 1,
     });
+    /* this.load.spritesheet('lesion', 'assets/images/lesion.png', {
+        frameWidth: 57,
+        frameHeight: 57,
+        startFrame: 0,
+        endFrame: 2,
+        margin: 1,
+        spacing: 1
+    }); */
 
     // TESTING ONLY - to watch progress bar grow
     //for (let i=0;i<500;i++){
