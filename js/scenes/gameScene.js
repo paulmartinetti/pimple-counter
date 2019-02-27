@@ -18,6 +18,9 @@ let gameScene = new Phaser.Scene('Game');
 // some parameters for our scene
 gameScene.init = function () {
 
+    this.gameW = this.sys.game.config.width;
+    this.gameH = this.sys.game.config.height;
+
     // lesions are found by mousing over photo
     this.dataA = [{
         x: 131,
@@ -87,6 +90,7 @@ gameScene.init = function () {
     // lesion depths
     this.hideLesions = 10;
     this.showLesions = 30;
+    this.isShowing = false;
 
     // define ring (spritesheet is called ring)
     // add to this as user clicks
@@ -109,9 +113,9 @@ gameScene.create = function () {
     let tempA = [];
     let len = this.dataA.length;
     for (let i = 0; i < len; i++) {
-        //let obj = this.add.sprite(this.dataA.x, this.dataA.y, 'lesion', 0);
+        //let obj = this.add.sprite(this.dataA.x, this.dataA.y, 'ring', 0);
         let obj = {
-            key: 'lesion',
+            key: 'ring',
             setXY: {
                 x: this.dataA[i].x,
                 y: this.dataA[i].y,
@@ -123,7 +127,7 @@ gameScene.create = function () {
     // now add custom and common properties to spritesheet objects
     for (let i = 0; i < len; i++) {
         // d = diameter
-        this.lesionA[i].setDisplaySize(this.dataA[i].d, this.dataA[i].d);
+        this.lesionA[i].setDisplaySize(40, 40);
         this.lesionA[i].depth = this.hideLesions;
         //this.lesionA[i].depth = this.showLesions;
         //this.lesionA[i].alpha = 0.4;
@@ -133,32 +137,34 @@ gameScene.create = function () {
     }
     //console.log(this.lesionA);
 
-    // make pet draggable
-    // access the input object of this scene
-    //this.input.setDraggable(this.pet);
-
-    // define dragging fns - follow the mouse pointer
-    /* this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-        // make sprite follow pointer
-        gameObject.x = dragX;
-        gameObject.y = dragY;
-        // to capture the name of the object being dragged
-        //console.log(gameObject.texture.key);
-    }); */
-
-    // diplay stats - Heads-up display
-    //this.createHud();
-    // show initial values
-    //this.refreshHud();
+    // make show / hide toggle
+    this.btn = this.add.sprite(this.gameH-150, 50, 'btn', 0);
+    this.btn.setDepth(21);
+    this.btn.setInteractive();
+    this.btn.on('pointerup',this.togShowHide);
 
 };
 
 // fn context - Scene
-gameScene.createUI = function () {
+gameScene.togShowHide = function () {
 
-    //this.candyBtn = this.add.sprite(144, 570, 'candy').setInteractive();
-    //this.candyBtn.customStats = { health: -10, fun: 10 };
-    //this.candyBtn.on('pointerdown', this.pickItem);
+    console.log(this.frame.name);
+    //this.setFrame(1);
+
+   if (!this.scene.isShowing) {
+        // on hide
+        this.setFrame(1);
+        this.scene.lesionA.forEach(lesion => {
+            lesion.depth = this.showLesions;
+        });
+        this.scene.isShowing = true;
+    } else {
+        this.setFrame(0);
+        this.scene.lesionA.forEach(lesion => {
+            lesion.depth = this.hideLesions;
+        });
+        this.scene.isShowing = false;
+    }
 
 };
 
@@ -202,6 +208,7 @@ gameScene.placeLesion = function (pointer, localX, localY) {
 
 // context = clicked Sprite
 gameScene.updateRing = function () {
+    console.log('updateRing');
 
     // switch
     switch(this.frame.name){
@@ -222,7 +229,7 @@ gameScene.updateRing = function () {
 
     }
 
-    console.log(this.scene.ringA[0].active);
+    //console.log(this.scene.ringA[0].active);
 
 };
 

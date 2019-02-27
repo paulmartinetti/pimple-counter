@@ -61,13 +61,14 @@ loadingScene.preload = function () {
         spacing: 1,
         frameNum: 0
     });
-    this.load.spritesheet('lesion', 'assets/images/lesion.png', {
-        frameWidth: 57,
-        frameHeight: 57,
+    // 136 x 24
+    this.load.spritesheet('btn', 'assets/images/showhide.png', {
+        frameWidth: 66,
+        frameHeight: 22,
         startFrame: 0,
-        endFrame: 2,
+        endFrame: 1,
         margin: 1,
-        spacing: 1
+        spacing: 1,
     });
 
     // TESTING ONLY - to watch progress bar grow
