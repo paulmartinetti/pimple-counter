@@ -84,7 +84,7 @@ gameScene.init = function () {
         d: 6,
         frame: 0,
         label: 'black',
-        desc: 'an open comedone'
+        desc: 'an open comedo'
     }];
 
     // lesion depths
@@ -136,8 +136,12 @@ gameScene.create = function () {
         this.lesionA[i].setFrame(this.dataA[i].frame);
     }
     //console.log(this.lesionA);
-
+    
     // make show / hide toggle
+    this.createShowHide();
+};
+
+gameScene.createShowHide = function(){
     let btn = this.add.sprite(this.gameH - 150, 50, 'btn', 0);
     btn.setDepth(21);
     btn.setInteractive();
@@ -157,13 +161,13 @@ gameScene.create = function () {
             this.scene.countBlock = false;
         }
     });
-};
+}
 
 
 // fn context = Scene not Sprite (bg) passed 'this' in on();
 gameScene.placeLesion = function (pointer, localX, localY) {
 
-    console.log(this.countBlock);
+    //console.log(this.countBlock);
 
     // no counting while viewing answers
     if (this.countBlock) return;
@@ -208,7 +212,7 @@ gameScene.updateRing = function () {
     // no counting while viewing answers
     if (this.scene.countBlock) return;
 
-    console.log('updateRing');
+    //console.log('updateRing');
 
     // switch
     switch (this.frame.name) {
