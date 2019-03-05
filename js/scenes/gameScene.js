@@ -21,6 +21,17 @@ gameScene.init = function () {
     this.gameW = this.sys.game.config.width;
     this.gameH = this.sys.game.config.height;
 
+
+    // testing json import from nodejs-mysql app on 3003 !!
+    console.log(this.cache.json.get('myjson'));
+    this.userA = this.cache.json.get('myjson');
+
+    this.userA.forEach(u => {
+        if (u.firstName == 'JOhn'){
+            console.log(u.id);
+        }
+    })
+
     // lesions are found by mousing over photo
     this.dataA = [{
         x: 131,

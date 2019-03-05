@@ -8,7 +8,7 @@ let config = {
   scene: [bootScene, loadingScene, homeScene, gameScene],
   title: 'Lesion counter',
   pixelArt: false,
-  backgroundColor: 'ffffff'
+  backgroundColor: 'ffffff',
 };
 
 // create the game, and pass it the configuration

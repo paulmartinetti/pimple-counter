@@ -10,6 +10,12 @@ loadingScene.preload = function () {
     let gameW = this.sys.game.config.width;
     let gameH = this.sys.game.config.height;
 
+    // test data load
+    //this.load.setCORS('anonymous');
+    //this.crossOrigin('anonymous);
+    // data used in gameScene
+    this.load.json('myjson','http://localhost:3003/users');
+
     // loaded in bootScene
     //let logo = this.add.sprite(gameW / 2, 250, 'logo');
 
@@ -87,7 +93,8 @@ loadingScene.preload = function () {
 };
 
 loadingScene.create = function () {
-
+    
+    //
     // animation of spritesheet - animations are global (available in multiple scenes)
     // to loop forever, repeat: -1
     // key name is arbitrary
